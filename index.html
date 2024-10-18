@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Dutching</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input {
+            margin-bottom: 10px;
+        }
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora Dutching</h1>
+    <samp>"O segredo não está no valor, mas no tempo."</samp>
+    <br>
+    <label for="totalBet">Valor Total da Aposta (R$):</label>
+    <input type="number" id="totalBet" value="100">
+
+    <label for="oddsA">Odds Time A:</label>
+    <input type="number" step="0.01" id="oddsA" value="1.42">
+
+    <label for="oddsB">Odds Time B:</label>
+    <input type="number" step="0.01" id="oddsB" value="7.70">
+
+    <label for="oddsDraw">Odds Empate:</label>
+    <input type="number" step="0.01" id="oddsDraw" value="7.70">
+
+    <label for="drawPercent">Porcentagem destinada ao Empate (%):</label>
+    <input type="number" id="drawPercent" value="15" min="0" max="100">
+
+    <button onclick="calculateDutching()">Calcular</button>
+
+    <h2>Resultados</h2>
+    <p id="result"></p>
+    <footer>
+        <samp>Developy BY Ranieu Sousa</samp>
+    </footer>
+
+    <script>
+        function calculateDutching() {
+            const totalBet = parseFloat(document.getElementById("totalBet").value);
+            const oddsA = parseFloat(document.getElementById("oddsA").value);
+            const oddsB = parseFloat(document.getElementById("oddsB").value);
+            const oddsDraw = parseFloat(document.getElementById("oddsDraw").value);
+            const drawPercent = parseFloat(document.getElementById("drawPercent").value) / 100;
+
+            // Calcular a aposta para o empate
+            const drawBet = totalBet * drawPercent;
+
+            // Calcular a aposta para os times A e B
+            const teamBet = totalBet * (1 - drawPercent);
+            const teamABet = (teamBet * oddsB) / (oddsA + oddsB);
+            const teamBBet = (teamBet * oddsA) / (oddsA + oddsB);
+
+            // Calcular o ganho potencial
+            const gainA = (teamABet * oddsA).toFixed(2);
+            const gainB = (teamBBet * oddsB).toFixed(2);
+            const gainDraw = (drawBet * oddsDraw).toFixed(2);
+
+            // Calcular o lucro
+            const profitA = (gainA - totalBet).toFixed(2);
+            const profitB = (gainB - totalBet).toFixed(2);
+            const profitDraw = (gainDraw - totalBet).toFixed(2);
+
+            // Calcular o retorno percentual com base no lucro
+            const percentA = ((gainA - totalBet) / totalBet * 100).toFixed(2);
+            const percentB = ((gainB - totalBet) / totalBet * 100).toFixed(2);
+            const percentDraw = ((gainDraw - totalBet) / totalBet * 100).toFixed(2);
+
+            // Exibir os resultados
+            document.getElementById("result").innerHTML = `
+                <strong>Aposta no Empate:</strong> R$ ${drawBet.toFixed(2)}, <strong>Ganho Possível:</strong> R$ ${gainDraw} (${profitDraw} de lucro, ${percentDraw}% de retorno)<br>
+                <strong>Aposta no Time A:</strong> R$ ${teamABet.toFixed(2)}, <strong>Ganho Possível:</strong> R$ ${gainA} (${profitA} de lucro, ${percentA}% de retorno)<br>
+                <strong>Aposta no Time B:</strong> R$ ${teamBBet.toFixed(2)}, <strong>Ganho Possível:</strong> R$ ${gainB} (${profitB} de lucro, ${percentB}% de retorno)
+            `;
+        }
+    </script>
+</body>
+</html>
