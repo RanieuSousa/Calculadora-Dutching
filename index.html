@@ -13,6 +13,13 @@
         input::placeholder {
             color: #6b7280;
         }
+        .tab-btn.active {
+            background-color: #9333ea; /* purple-600 */
+            color: #ffffff;
+        }
+        .tab-btn {
+            transition: all 0.3s ease-in-out;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen p-4">
@@ -24,91 +31,141 @@
             <p class="text-gray-400 mt-2">Encontre oportunidades de lucro garantido no mercado de gols.</p>
         </div>
 
+        <!-- Abas de Navegação -->
+        <div class="flex border-b border-gray-700 bg-gray-900/50">
+            <button id="tab-scanner" class="tab-btn flex-1 p-4 text-lg font-semibold active">Scanner</button>
+            <button id="tab-help" class="tab-btn flex-1 p-4 text-lg font-semibold text-gray-400">Como Usar</button>
+        </div>
+
         <div class="p-6 sm:p-8">
-            <!-- Entradas de Valor -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                 <div>
-                    <label for="betCasaA" class="block mb-2 text-sm font-medium text-gray-300">Valor da Aposta - Casa A (R$)</label>
-                    <input type="number" id="betCasaA" placeholder="Ex: 100.00" value="100.00" class="bg-gray-700 border border-gray-600 text-white text-lg rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-3 shadow-inner">
+            <!-- Conteúdo do Scanner -->
+            <div id="content-scanner" class="tab-content">
+                <!-- Entradas de Valor -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                     <div>
+                        <label for="betCasaA" class="block mb-2 text-sm font-medium text-gray-300">Valor da Aposta - Casa A (R$)</label>
+                        <input type="number" id="betCasaA" placeholder="Ex: 100.00" value="100.00" class="bg-gray-700 border border-gray-600 text-white text-lg rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-3 shadow-inner">
+                    </div>
+                    <div>
+                        <label for="betCasaB" class="block mb-2 text-sm font-medium text-gray-300">Valor da Aposta - Casa B (R$)</label>
+                        <input type="number" id="betCasaB" placeholder="Ex: 100.00" value="100.00" class="bg-gray-700 border border-gray-600 text-white text-lg rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-3 shadow-inner">
+                    </div>
                 </div>
-                <div>
-                    <label for="betCasaB" class="block mb-2 text-sm font-medium text-gray-300">Valor da Aposta - Casa B (R$)</label>
-                    <input type="number" id="betCasaB" placeholder="Ex: 100.00" value="100.00" class="bg-gray-700 border border-gray-600 text-white text-lg rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-3 shadow-inner">
-                </div>
-            </div>
 
-            <!-- Tabelas de Odds -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Casa A -->
-                <div class="bg-gray-700/40 p-4 rounded-xl">
-                    <h3 class="text-2xl font-semibold mb-4 text-center text-white">Casa de Apostas A</h3>
-                    <div class="space-y-2">
-                        <!-- Header -->
-                        <div class="grid grid-cols-3 gap-2 text-center font-semibold text-gray-400 text-sm">
-                            <div>Linha</div>
-                            <div>Mais de</div>
-                            <div>Menos de</div>
+                <!-- Tabelas de Odds -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Casa A -->
+                    <div class="bg-gray-700/40 p-4 rounded-xl">
+                        <h3 class="text-2xl font-semibold mb-4 text-center text-white">Casa de Apostas A</h3>
+                        <div class="space-y-2">
+                            <div class="grid grid-cols-3 gap-2 text-center font-semibold text-gray-400 text-sm">
+                                <div>Linha</div>
+                                <div>Mais de</div>
+                                <div>Menos de</div>
+                            </div>
+                            <div id="inputsCasaA" class="space-y-2"></div>
                         </div>
-                        <!-- Inputs -->
-                        <div id="inputsCasaA" class="space-y-2">
-                            <!-- Os inputs serão gerados pelo JS, mas o exemplo será preenchido -->
+                    </div>
+                    <!-- Casa B -->
+                    <div class="bg-gray-700/40 p-4 rounded-xl">
+                        <h3 class="text-2xl font-semibold mb-4 text-center text-white">Casa de Apostas B</h3>
+                         <div class="space-y-2">
+                            <div class="grid grid-cols-3 gap-2 text-center font-semibold text-gray-400 text-sm">
+                                <div>Linha</div>
+                                <div>Mais de</div>
+                                <div>Menos de</div>
+                            </div>
+                            <div id="inputsCasaB" class="space-y-2"></div>
                         </div>
                     </div>
                 </div>
-                <!-- Casa B -->
-                <div class="bg-gray-700/40 p-4 rounded-xl">
-                    <h3 class="text-2xl font-semibold mb-4 text-center text-white">Casa de Apostas B</h3>
-                     <div class="space-y-2">
-                        <!-- Header -->
-                        <div class="grid grid-cols-3 gap-2 text-center font-semibold text-gray-400 text-sm">
-                            <div>Linha</div>
-                            <div>Mais de</div>
-                            <div>Menos de</div>
-                        </div>
-                        <!-- Inputs -->
-                        <div id="inputsCasaB" class="space-y-2"></div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="mt-8"><button id="calculateScannerBtn" class="w-full text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-800 font-bold rounded-lg text-lg px-5 py-4 text-center transition-all duration-300 ease-in-out transform hover:scale-105">Escanear Oportunidades de Lucro</button></div>
-            <div id="resultScanner" class="mt-8"></div>
+                <div class="mt-8"><button id="calculateScannerBtn" class="w-full text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-800 font-bold rounded-lg text-lg px-5 py-4 text-center transition-all duration-300 ease-in-out transform hover:scale-105">Escanear Oportunidades de Lucro</button></div>
+                <div id="resultScanner" class="mt-8"></div>
+            </div>
+            
+            <!-- Conteúdo da Ajuda -->
+            <div id="content-help" class="tab-content hidden leading-relaxed">
+                <h2 class="text-2xl font-bold text-purple-400 mb-4">Guia Rápido do Scanner</h2>
+                <p class="text-gray-300 mb-6">Esta ferramenta foi projetada para encontrar "middles perfeitos", que são oportunidades onde você tem um lucro garantido, não importa o resultado do jogo.</p>
+
+                <ol class="list-decimal list-inside space-y-4 text-gray-300">
+                    <li>
+                        <strong>Defina os Valores:</strong> Nos campos "Valor da Aposta", insira quanto do seu saldo de cada casa você deseja usar na operação. O sistema somará os dois para calcular o investimento total.
+                    </li>
+                    <li>
+                        <strong>Preencha as Odds:</strong> Para um mesmo jogo, preencha as tabelas com as odds oferecidas por cada casa de aposta. Você não precisa preencher todas as linhas, apenas as que estiverem disponíveis.
+                    </li>
+                    <li class="font-bold text-white">
+                        <div class="bg-yellow-900/50 border border-yellow-700 text-yellow-300 p-4 rounded-lg">
+                            <h3 class="font-bold text-lg mb-2">⚠️ ATENÇÃO: Use PONTO, não vírgula!</h3>
+                            <p class="font-normal">Ao inserir as odds, use sempre o ponto como separador decimal. <br>Correto: <code class="bg-gray-700 p-1 rounded">1.85</code> | Incorreto: <code class="bg-gray-700 p-1 rounded">1,85</code></p>
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Escanear:</strong> Clique no botão "Escanear Oportunidades de Lucro".
+                    </li>
+                    <li>
+                        <strong>Analisar Resultados:</strong> O sistema irá cruzar todas as odds e mostrar apenas as combinações que garantem lucro em todos os cenários. Ele mostrará o seu lucro mínimo garantido e o lucro máximo se o resultado cair na "janela do middle". Se nenhuma oportunidade for encontrada, ele também avisará.
+                    </li>
+                </ol>
+            </div>
         </div>
     </div>
 
     <footer class="text-center mt-8"><p class="text-gray-500 text-sm">Developed by Ranieu Sousa</p></footer>
 
     <script>
+        // --- LÓGICA DAS ABAS ---
+        const tabScanner = document.getElementById('tab-scanner');
+        const tabHelp = document.getElementById('tab-help');
+        const contentScanner = document.getElementById('content-scanner');
+        const contentHelp = document.getElementById('content-help');
+
+        tabScanner.addEventListener('click', () => {
+            tabScanner.classList.add('active');
+            tabHelp.classList.remove('active');
+            contentScanner.classList.remove('hidden');
+            contentHelp.classList.add('hidden');
+        });
+
+        tabHelp.addEventListener('click', () => {
+            tabHelp.classList.add('active');
+            tabScanner.classList.remove('active');
+            contentHelp.classList.remove('hidden');
+            contentScanner.classList.add('hidden');
+        });
+
+
         // --- GERAÇÃO DOS INPUTS DINÂMICOS ---
         const lines = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5];
         const inputsCasaA = document.getElementById('inputsCasaA');
         const inputsCasaB = document.getElementById('inputsCasaB');
 
         lines.forEach(line => {
+            const lineId = line.toString().replace('.', '_');
             // Inputs para Casa A
             inputsCasaA.innerHTML += `
                 <div class="grid grid-cols-3 gap-2 items-center">
                     <div class="bg-gray-800 text-gray-300 text-center py-2.5 rounded-lg">${line.toFixed(1)}</div>
-                    <input type="number" id="casaA_over_${line}" step="0.01" placeholder="Odd" class="bg-gray-600 border-gray-500 text-white rounded-lg w-full p-2.5 text-center">
-                    <input type="number" id="casaA_under_${line}" step="0.01" placeholder="Odd" class="bg-gray-600 border-gray-500 text-white rounded-lg w-full p-2.5 text-center">
+                    <input type="number" id="casaA_over_${lineId}" step="0.01" placeholder="Odd" class="bg-gray-600 border-gray-500 text-white rounded-lg w-full p-2.5 text-center">
+                    <input type="number" id="casaA_under_${lineId}" step="0.01" placeholder="Odd" class="bg-gray-600 border-gray-500 text-white rounded-lg w-full p-2.5 text-center">
                 </div>
             `;
             // Inputs para Casa B
             inputsCasaB.innerHTML += `
                 <div class="grid grid-cols-3 gap-2 items-center">
                     <div class="bg-gray-800 text-gray-300 text-center py-2.5 rounded-lg">${line.toFixed(1)}</div>
-                    <input type="number" id="casaB_over_${line}" step="0.01" placeholder="Odd" class="bg-gray-600 border-gray-500 text-white rounded-lg w-full p-2.5 text-center">
-                    <input type="number" id="casaB_under_${line}" step="0.01" placeholder="Odd" class="bg-gray-600 border-gray-500 text-white rounded-lg w-full p-2.5 text-center">
+                    <input type="number" id="casaB_over_${lineId}" step="0.01" placeholder="Odd" class="bg-gray-600 border-gray-500 text-white rounded-lg w-full p-2.5 text-center">
+                    <input type="number" id="casaB_under_${lineId}" step="0.01" placeholder="Odd" class="bg-gray-600 border-gray-500 text-white rounded-lg w-full p-2.5 text-center">
                 </div>
             `;
         });
         
         // --- PREENCHIMENTO AUTOMÁTICO DO EXEMPLO ---
         function fillExample() {
-            // Casa A
-            document.getElementById('casaA_over_2.5').value = '2.10';
-            // Casa B
-            document.getElementById('casaB_under_3.5').value = '2.05';
+            document.getElementById('casaA_over_2_5').value = '2.10';
+            document.getElementById('casaB_under_3_5').value = '2.05';
         }
         fillExample();
 
@@ -131,8 +188,9 @@
             function getOddsFromInputs(casaId) {
                 const oddsData = [];
                 lines.forEach(line => {
-                    const overOdd = parseFloat(document.getElementById(`${casaId}_over_${line}`).value) || 0;
-                    const underOdd = parseFloat(document.getElementById(`${casaId}_under_${line}`).value) || 0;
+                    const lineId = line.toString().replace('.', '_');
+                    const overOdd = parseFloat(document.getElementById(`${casaId}_over_${lineId}`).value) || 0;
+                    const underOdd = parseFloat(document.getElementById(`${casaId}_under_${lineId}`).value) || 0;
                     if (overOdd > 0) {
                         oddsData.push({ type: 'over', line: line, odd: overOdd, casa: casaId === 'casaA' ? 'Casa A' : 'Casa B' });
                     }
@@ -158,7 +216,6 @@
                 const profitMiddle = (stakeOver * overBet.odd) + (stakeUnder * underBet.odd) - totalBet;
                 const controlledLoss = (stakeOver * overBet.odd) - totalBet;
 
-                // Apenas adiciona se for um "middle perfeito" (lucro mesmo no pior caso)
                 if (controlledLoss > 0) {
                     profitableMiddles.push({
                         overLine: overBet.line,
@@ -184,10 +241,8 @@
                 }
             }
             
-            // Ordenar por maior lucro garantido
             profitableMiddles.sort((a, b) => b.guaranteedProfit - a.guaranteedProfit);
 
-            // Renderizar os resultados
             if (profitableMiddles.length > 0) {
                 let html = '<h2 class="text-2xl font-bold text-purple-300 text-center mb-6">Oportunidades de Lucro Encontradas!</h2>';
                 html += '<div class="space-y-6">';
