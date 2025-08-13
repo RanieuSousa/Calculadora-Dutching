@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scanner de Middles Avançado</title>
+    <title>Calculadora de Trading Avançada</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -27,20 +27,46 @@
     <div class="w-full max-w-5xl bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 overflow-hidden">
         
         <div class="text-center p-6 sm:p-8 bg-gray-800">
-            <h1 class="text-3xl sm:text-4xl font-bold text-purple-400">Scanner de Middles</h1>
-            <p class="text-gray-400 mt-2">Encontre oportunidades de lucro garantido no mercado de gols.</p>
+            <h1 class="text-3xl sm:text-4xl font-bold text-purple-400">Calculadora de Trading Avançada</h1>
+            <p class="text-gray-400 mt-2">Uma suíte completa para suas estratégias de trading.</p>
         </div>
 
         <!-- Abas de Navegação -->
-        <div class="flex border-b border-gray-700 bg-gray-900/50">
-            <button id="tab-scanner" class="tab-btn flex-1 p-4 text-lg font-semibold active">Scanner</button>
-            <button id="tab-help" class="tab-btn flex-1 p-4 text-lg font-semibold text-gray-400">Como Usar</button>
+        <div class="flex border-b border-gray-700 bg-gray-900/50 text-sm sm:text-base">
+            <button id="tab-dutching" class="tab-btn flex-1 p-3 sm:p-4 font-semibold active">Dutching</button>
+            <button id="tab-scanner" class="tab-btn flex-1 p-3 sm:p-4 font-semibold text-gray-400">Scanner Middles</button>
+            <button id="tab-help" class="tab-btn flex-1 p-3 sm:p-4 font-semibold text-gray-400">Como Usar</button>
         </div>
 
         <div class="p-6 sm:p-8">
+            <!-- Conteúdo do Dutching -->
+            <div id="content-dutching" class="tab-content">
+                <div class="mb-6">
+                    <label for="dutchingTotalBet" class="block mb-2 text-sm font-medium text-gray-300">Valor Total da Aposta (R$)</label>
+                    <input type="number" id="dutchingTotalBet" placeholder="Ex: 100.00" class="bg-gray-700 border border-gray-600 text-white text-lg rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-3 shadow-inner">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Time A -->
+                    <div class="bg-gray-700/40 p-4 rounded-xl border border-gray-600">
+                        <h3 class="text-xl font-semibold mb-3 text-white">Time A (Mandante)</h3>
+                        <div class="space-y-3">
+                            <div><label for="dutchingOddA" class="block mb-1 text-sm font-medium text-gray-400">Odd de Vitória</label><input type="number" id="dutchingOddA" step="0.01" placeholder="Ex: 1.85" class="bg-gray-600 border-gray-500 text-white rounded-lg w-full p-2.5"></div>
+                        </div>
+                    </div>
+                    <!-- Time B -->
+                    <div class="bg-gray-700/40 p-4 rounded-xl border border-gray-600">
+                        <h3 class="text-xl font-semibold mb-3 text-white">Time B (Visitante)</h3>
+                        <div class="space-y-3">
+                            <div><label for="dutchingOddB" class="block mb-1 text-sm font-medium text-gray-400">Odd de Vitória</label><input type="number" id="dutchingOddB" step="0.01" placeholder="Ex: 3.50" class="bg-gray-600 border-gray-500 text-white rounded-lg w-full p-2.5"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8"><button id="calculateDutchingBtn" class="w-full text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-800 font-bold rounded-lg text-lg px-5 py-4 text-center">Calcular Dutching</button></div>
+                <div id="resultDutching" class="mt-8"></div>
+            </div>
+
             <!-- Conteúdo do Scanner -->
-            <div id="content-scanner" class="tab-content">
-                <!-- Entradas de Valor -->
+            <div id="content-scanner" class="tab-content hidden">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                      <div>
                         <label for="betCasaA" class="block mb-2 text-sm font-medium text-gray-300">Valor da Aposta - Casa A (R$)</label>
@@ -51,10 +77,7 @@
                         <input type="number" id="betCasaB" placeholder="Ex: 100.00" value="100.00" class="bg-gray-700 border border-gray-600 text-white text-lg rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-3 shadow-inner">
                     </div>
                 </div>
-
-                <!-- Tabelas de Odds -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- Casa A -->
                     <div class="bg-gray-700/40 p-4 rounded-xl">
                         <h3 class="text-2xl font-semibold mb-4 text-center text-white">Casa de Apostas A</h3>
                         <div class="space-y-2">
@@ -66,7 +89,6 @@
                             <div id="inputsCasaA" class="space-y-2"></div>
                         </div>
                     </div>
-                    <!-- Casa B -->
                     <div class="bg-gray-700/40 p-4 rounded-xl">
                         <h3 class="text-2xl font-semibold mb-4 text-center text-white">Casa de Apostas B</h3>
                          <div class="space-y-2">
@@ -79,86 +101,70 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="mt-8"><button id="calculateScannerBtn" class="w-full text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-800 font-bold rounded-lg text-lg px-5 py-4 text-center transition-all duration-300 ease-in-out transform hover:scale-105">Escanear Oportunidades de Lucro</button></div>
+                <div class="mt-8"><button id="calculateScannerBtn" class="w-full text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-800 font-bold rounded-lg text-lg px-5 py-4 text-center">Escanear Oportunidades de Lucro</button></div>
                 <div id="resultScanner" class="mt-8"></div>
             </div>
             
             <!-- Conteúdo da Ajuda (ATUALIZADO) -->
             <div id="content-help" class="tab-content hidden leading-relaxed">
-                <h2 class="text-2xl font-bold text-purple-400 mb-4">Entendendo a Estratégia</h2>
-                <p class="text-gray-300 mb-4">
-                    O objetivo desta ferramenta é encontrar "middles perfeitos". Essa é uma estratégia avançada que busca uma "janela" na quantidade de gols de um jogo onde duas apostas opostas se tornam vencedoras ao mesmo tempo, garantindo um lucro em qualquer cenário.
-                </p>
-
-                <div class="bg-gray-900/50 p-6 rounded-lg my-6 border border-gray-700">
-                    <h3 class="text-xl font-semibold text-white mb-4">Exemplo Prático: Janela de 3 Gols</h3>
-                    <ul class="list-disc list-inside text-gray-300 mb-4 space-y-1">
-                        <li><b>Casa A:</b> aposta <b>mais de 2.5 gols</b> → você ganha se o jogo tiver 3 ou mais gols.</li>
-                        <li><b>Casa B:</b> aposta <b>menos de 3.5 gols</b> → você ganha se o jogo tiver 3 ou menos gols.</li>
-                    </ul>
-                    <p class="text-gray-300 mb-4">Então, os possíveis cenários de gols são:</p>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm">
-                            <thead class="bg-gray-700 text-gray-300 uppercase">
-                                <tr>
-                                    <th class="p-3">Gols no Jogo</th>
-                                    <th class="p-3">Casa A (>2.5)</th>
-                                    <th class="p-3">Casa B (<3.5)</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-gray-800">
-                                <tr class="border-b border-gray-700">
-                                    <td class="p-3">0, 1, 2</td>
-                                    <td class="p-3 text-red-400">Perde</td>
-                                    <td class="p-3 text-green-400">Ganha</td>
-                                </tr>
-                                <tr class="border-b border-gray-700 bg-purple-900/40">
-                                    <td class="p-3 font-bold">3</td>
-                                    <td class="p-3 text-green-400 font-bold">Ganha</td>
-                                    <td class="p-3 text-green-400 font-bold">Ganha</td>
-                                </tr>
-                                <tr class="border-b border-gray-700">
-                                    <td class="p-3">4, 5+</td>
-                                    <td class="p-3 text-green-400">Ganha</td>
-                                    <td class="p-3 text-red-400">Perde</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <div class="mb-8 pb-8 border-b border-gray-700">
+                    <h2 class="text-2xl font-bold text-purple-400 mb-4">Estratégia 1: Dutching (Contra o Empate)</h2>
+                    <p class="text-gray-300 mb-4">
+                        O Dutching é uma estratégia fundamental para aumentar suas chances de ganhar. Em vez de apostar em apenas um resultado, você divide sua aposta para cobrir <strong>dois dos três resultados possíveis</strong> (Vitória Time A, Empate, Vitória Time B). A aplicação mais comum é apostar contra o empate.
+                    </p>
+                    <div class="bg-gray-900/50 p-6 rounded-lg my-6 border border-gray-700">
+                        <h3 class="text-xl font-semibold text-white mb-4">Exemplo Prático: Flamengo vs. Internacional</h3>
+                        <p class="text-gray-300 mb-4">Imagine uma aposta de <strong>R$ 100,00</strong> neste jogo com as seguintes odds:</p>
+                        <ul class="list-none text-gray-300 mb-4 space-y-1">
+                            <li>Odd de vitória do Flamengo (Time A): <strong>1.65</strong></li>
+                            <li>Odd de vitória do Internacional (Time B): <strong>6.70</strong></li>
+                        </ul>
+                        <p class="text-gray-300 mb-4">A calculadora de Dutching fará a divisão para você:</p>
+                        <ul class="list-disc list-inside text-gray-300 mb-4 space-y-1">
+                            <li>Aposte <strong>R$ 80,24</strong> na vitória do Flamengo.</li>
+                            <li>Aposte <strong>R$ 19,76</strong> na vitória do Internacional.</li>
+                        </ul>
+                        <div class="border-t border-gray-600 pt-4 mt-4">
+                            <p class="text-lg text-white">Se o Flamengo <span class="text-green-400">ou</span> o Internacional ganhar, seu retorno será de <strong>R$ 132,40</strong>, resultando em um <strong>lucro de R$ 32,40</strong>.</p>
+                            <p class="text-red-400 mt-2"><strong>Atenção:</strong> Se o jogo terminar empatado, a aposta total de R$ 100,00 é perdida.</p>
+                        </div>
                     </div>
-                    <p class="text-gray-400 mt-4 text-sm">O scanner busca exatamente por essas situações onde, mesmo no pior caso (0, 1, 2, 4, 5+ gols), a aposta vencedora cobre o custo da perdedora e ainda gera lucro.</p>
                 </div>
 
-
-                <h2 class="text-2xl font-bold text-purple-400 mb-4 mt-8">Guia Rápido do Scanner</h2>
-                <ol class="list-decimal list-inside space-y-4 text-gray-300">
-                    <li>
-                        <strong>Defina os Valores:</strong> Nos campos "Valor da Aposta", insira quanto do seu saldo de cada casa você deseja usar na operação. O sistema somará os dois para calcular o investimento total.
-                    </li>
-                    <li>
-                        <strong>Preencha as Odds:</strong> Para um mesmo jogo, preencha as tabelas com as odds oferecidas por cada casa de aposta. Você não precisa preencher todas as linhas, apenas as que estiverem disponíveis.
-                    </li>
-                    <li class="font-bold text-white">
-                        <div class="bg-yellow-900/50 border border-yellow-700 text-yellow-300 p-4 rounded-lg">
-                            <h3 class="font-bold text-lg mb-2">⚠️ ATENÇÃO: Use PONTO, não vírgula!</h3>
-                            <p class="font-normal">Ao inserir as odds, use sempre o ponto como separador decimal. <br>Correto: <code class="bg-gray-700 p-1 rounded">1.85</code> | Incorreto: <code class="bg-gray-700 p-1 rounded">1,85</code></p>
-                        </div>
-                    </li>
-                    <li>
-                        <strong>Escanear:</strong> Clique no botão "Escanear Oportunidades de Lucro".
-                    </li>
-                    <li>
-                        <strong>Analisar Resultados:</strong> O sistema irá cruzar todas as odds e mostrar apenas as combinações que garantem lucro em todos os cenários.
-                    </li>
-                </ol>
-
-                <div class="bg-red-900/50 border border-red-700 text-red-300 p-6 rounded-lg mt-8">
-                    <h3 class="font-bold text-xl mb-3 text-red-200">Aviso Importante para o Trader</h3>
-                    <p class="font-normal">Esta ferramenta é poderosa, mas o sucesso depende do seu trabalho e disciplina. Lembre-se sempre:</p>
-                    <ul class="list-disc list-inside mt-4 space-y-2">
-                        <li><b>Nem todo jogo serve:</b> Oportunidades de lucro garantido são raras. A maior parte do seu trabalho será procurar manualmente por jogos com as odds certas.</li>
-                        <li><b>Gerenciamento de Banca é Crucial:</b> O sucesso a longo prazo exige sabedoria para gerenciar seu saldo nas duas casas de apostas. Nunca aposte um valor que você não pode se permitir perder.</li>
-                    </ul>
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-purple-400 mb-4">Estratégia 2: Scanner de Middles</h2>
+                    <p class="text-gray-300 mb-4">
+                        Esta é uma estratégia avançada que busca uma "janela" na quantidade de gols onde duas apostas opostas (ex: Mais de 2.5 e Menos de 3.5) se tornam vencedoras ao mesmo tempo. O scanner procura por "middles perfeitos", que garantem lucro em qualquer cenário.
+                    </p>
+                    <h3 class="text-xl font-semibold text-white mb-4">Guia Rápido do Scanner</h3>
+                    <ol class="list-decimal list-inside space-y-4 text-gray-300">
+                        <li>
+                            <strong>Defina os Valores:</strong> Nos campos "Valor da Aposta", insira quanto do seu saldo de cada casa você deseja usar na operação.
+                        </li>
+                        <li>
+                            <strong>Preencha as Odds:</strong> Para um mesmo jogo, preencha as tabelas com as odds oferecidas por cada casa de aposta.
+                        </li>
+                        <li class="font-bold text-white">
+                            <div class="bg-yellow-900/50 border border-yellow-700 text-yellow-300 p-4 rounded-lg">
+                                <h3 class="font-bold text-lg mb-2">⚠️ ATENÇÃO: Use PONTO, não vírgula!</h3>
+                                <p class="font-normal">Ao inserir as odds, use sempre o ponto como separador decimal. <br>Correto: <code class="bg-gray-700 p-1 rounded">1.85</code> | Incorreto: <code class="bg-gray-700 p-1 rounded">1,85</code></p>
+                            </div>
+                        </li>
+                        <li>
+                            <strong>Escanear:</strong> Clique no botão "Escanear Oportunidades de Lucro".
+                        </li>
+                        <li>
+                            <strong>Analisar Resultados:</strong> O sistema irá cruzar todas as odds e mostrar apenas as combinações que garantem lucro em todos os cenários.
+                        </li>
+                    </ol>
+                    <div class="bg-red-900/50 border border-red-700 text-red-300 p-6 rounded-lg mt-8">
+                        <h3 class="font-bold text-xl mb-3 text-red-200">Aviso Importante para o Trader</h3>
+                        <p class="font-normal">Esta ferramenta é poderosa, mas o sucesso depende do seu trabalho e disciplina. Lembre-se sempre:</p>
+                        <ul class="list-disc list-inside mt-4 space-y-2">
+                            <li><b>Nem todo jogo serve:</b> Oportunidades de lucro garantido são raras. A maior parte do seu trabalho será procurar manualmente por jogos com as odds certas.</li>
+                            <li><b>Gerenciamento de Banca é Crucial:</b> O sucesso a longo prazo exige sabedoria para gerenciar seu saldo nas duas casas de apostas. Nunca aposte um valor que você não pode se permitir perder.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -168,30 +174,83 @@
 
     <script>
         // --- LÓGICA DAS ABAS ---
-        const tabScanner = document.getElementById('tab-scanner');
-        const tabHelp = document.getElementById('tab-help');
-        const contentScanner = document.getElementById('content-scanner');
-        const contentHelp = document.getElementById('content-help');
-
-        tabScanner.addEventListener('click', () => {
-            tabScanner.classList.add('active');
-            tabScanner.classList.remove('text-gray-400');
-            tabHelp.classList.remove('active');
-            tabHelp.classList.add('text-gray-400');
-            contentScanner.classList.remove('hidden');
-            contentHelp.classList.add('hidden');
+        const tabs = [
+            { btn: document.getElementById('tab-dutching'), content: document.getElementById('content-dutching') },
+            { btn: document.getElementById('tab-scanner'), content: document.getElementById('content-scanner') },
+            { btn: document.getElementById('tab-help'), content: document.getElementById('content-help') }
+        ];
+        tabs.forEach(tab => {
+            tab.btn.addEventListener('click', () => {
+                tabs.forEach(item => {
+                    item.btn.classList.remove('active');
+                    item.btn.classList.add('text-gray-400');
+                    if(item.content) item.content.classList.add('hidden');
+                });
+                tab.btn.classList.add('active');
+                tab.btn.classList.remove('text-gray-400');
+                if(tab.content) tab.content.classList.remove('hidden');
+            });
         });
 
-        tabHelp.addEventListener('click', () => {
-            tabHelp.classList.add('active');
-            tabHelp.classList.remove('text-gray-400');
-            tabScanner.classList.remove('active');
-            tabScanner.classList.add('text-gray-400');
-            contentHelp.classList.remove('hidden');
-            contentScanner.classList.add('hidden');
+        // --- LÓGICA DA CALCULADORA DE DUTCHING ---
+        document.getElementById('calculateDutchingBtn').addEventListener('click', function() {
+            const totalBet = parseFloat(document.getElementById('dutchingTotalBet').value) || 0;
+            const oddA = parseFloat(document.getElementById('dutchingOddA').value) || 0;
+            const oddB = parseFloat(document.getElementById('dutchingOddB').value) || 0;
+            const resultDiv = document.getElementById('resultDutching');
+            resultDiv.innerHTML = '';
+
+            if (totalBet <= 0 || oddA <= 1 || oddB <= 1) {
+                resultDiv.innerHTML = `<div class="bg-yellow-900/50 border border-yellow-700 text-yellow-300 p-4 rounded-lg text-center">Por favor, preencha o valor da aposta e odds válidas (maiores que 1).</div>`;
+                return;
+            }
+
+            const teamAName = 'Time A';
+            const teamBName = 'Time B';
+
+            const probA = 1 / oddA;
+            const probB = 1 / oddB;
+            const totalProb = probA + probB;
+
+            const stakeA = totalBet / totalProb * probA;
+            const stakeB = totalBet - stakeA;
+
+            const gain = stakeA * oddA;
+            const profit = gain - totalBet;
+            const percentageReturn = (profit / totalBet) * 100;
+
+            let resultHTML = `
+                <h2 class="text-2xl font-bold text-purple-300 text-center mb-6">Resultados da Aposta</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            `;
+
+            resultHTML += `
+                <div class="bg-gray-700/50 border-t-4 border-blue-500 p-6 rounded-lg shadow-lg space-y-3">
+                    <h3 class="text-xl font-bold text-white">${teamAName}</h3>
+                    <div class="flex justify-between items-center text-gray-300"><span>Valor da Aposta:</span> <span class="font-semibold text-white">R$ ${stakeA.toFixed(2)}</span></div>
+                    <div class="flex justify-between items-center text-gray-300"><span>Ganho Possível:</span> <span class="font-semibold text-white">R$ ${gain.toFixed(2)}</span></div>
+                    <div class="flex justify-between items-center text-green-400"><span>Lucro:</span> <span class="font-bold">R$ ${profit.toFixed(2)}</span></div>
+                    <div class="flex justify-between items-center text-gray-300"><span>Retorno:</span> <span class="font-semibold text-white">${percentageReturn.toFixed(2)}%</span></div>
+                </div>
+            `;
+            resultHTML += `
+                <div class="bg-gray-700/50 border-t-4 border-red-500 p-6 rounded-lg shadow-lg space-y-3">
+                    <h3 class="text-xl font-bold text-white">${teamBName}</h3>
+                    <div class="flex justify-between items-center text-gray-300"><span>Valor da Aposta:</span> <span class="font-semibold text-white">R$ ${stakeB.toFixed(2)}</span></div>
+                    <div class="flex justify-between items-center text-gray-300"><span>Ganho Possível:</span> <span class="font-semibold text-white">R$ ${gain.toFixed(2)}</span></div>
+                    <div class="flex justify-between items-center text-green-400"><span>Lucro:</span> <span class="font-bold">R$ ${profit.toFixed(2)}</span></div>
+                    <div class="flex justify-between items-center text-gray-300"><span>Retorno:</span> <span class="font-semibold text-white">${percentageReturn.toFixed(2)}%</span></div>
+                </div>
+            `;
+            resultHTML += `</div>`;
+            resultHTML += `
+                <div class="bg-red-900/50 border border-red-700 text-red-300 p-4 rounded-lg mt-8 text-center">
+                    <p><strong class="font-bold">Atenção:</strong> Esta aposta é vencedora se o ${teamAName} OU o ${teamBName} ganhar. Se o jogo terminar em <strong>EMPATE</strong>, a aposta total de R$ ${totalBet.toFixed(2)} será perdida.</p>
+                </div>
+            `;
+            resultDiv.innerHTML = resultHTML;
         });
-
-
+        
         // --- GERAÇÃO DOS INPUTS DINÂMICOS ---
         const lines = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5];
         const inputsCasaA = document.getElementById('inputsCasaA');
@@ -199,7 +258,6 @@
 
         lines.forEach(line => {
             const lineId = line.toString().replace('.', '_');
-            // Inputs para Casa A
             inputsCasaA.innerHTML += `
                 <div class="grid grid-cols-3 gap-2 items-center">
                     <div class="bg-gray-800 text-gray-300 text-center py-2.5 rounded-lg">${line.toFixed(1)}</div>
@@ -207,7 +265,6 @@
                     <input type="number" id="casaA_under_${lineId}" step="0.01" placeholder="Odd" class="bg-gray-600 border-gray-500 text-white rounded-lg w-full p-2.5 text-center">
                 </div>
             `;
-            // Inputs para Casa B
             inputsCasaB.innerHTML += `
                 <div class="grid grid-cols-3 gap-2 items-center">
                     <div class="bg-gray-800 text-gray-300 text-center py-2.5 rounded-lg">${line.toFixed(1)}</div>
@@ -217,13 +274,11 @@
             `;
         });
         
-        // --- PREENCHIMENTO AUTOMÁTICO DO EXEMPLO ---
         function fillExample() {
             document.getElementById('casaA_over_2_5').value = '2.10';
             document.getElementById('casaB_under_3_5').value = '2.05';
         }
         fillExample();
-
 
         // --- LÓGICA DO SCANNER DE MIDDLES ---
         document.getElementById('calculateScannerBtn').addEventListener('click', function() {
@@ -239,7 +294,6 @@
                 return;
             }
 
-            // Função para ler os dados dos inputs
             function getOddsFromInputs(casaId) {
                 const oddsData = [];
                 lines.forEach(line => {
@@ -264,7 +318,6 @@
 
             let profitableMiddles = [];
 
-            // Função para calcular e verificar um middle
             function checkMiddle(overBet, underBet, totalBet) {
                 const stakeOver = totalBet * underBet.odd / (overBet.odd + underBet.odd);
                 const stakeUnder = totalBet - stakeOver;
@@ -287,7 +340,6 @@
                 }
             }
 
-            // Cruzamento de todas as odds
             for (const over of allOvers) {
                 for (const under of allUnders) {
                     if (under.line > over.line) {
